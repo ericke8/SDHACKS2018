@@ -10,9 +10,6 @@ KEY_MOD = 256
 SPACE_KEY = 32
 ESC_KEY = 27
 
-translate_output = open("output.txt", "w+")
-translate_output.write("Welcome to Sign Language Translator.\n")
-
 json_data = open(os.path.join(os.path.dirname(os.path.realpath('__file__')),"api_keys.json")).read()
 api_keys = json.loads(json_data)
 
@@ -61,6 +58,9 @@ rgb_flash = (255,255,255)
 thickness_flash = 1000
 
 cam = cv2.VideoCapture(0)
+
+translate_output = open("output.txt", "w+")
+translate_output.write("Welcome to Sign Language Translator.\n")
 
 dirName = 'images'
 
