@@ -9,15 +9,66 @@ app = ClarifaiApp(api_key='b6fdc0bdb31847798c3568d6922aa2c8')
 # for concept in concepts:
 #     print(concept['name'], concept['value'])
 
-parentDir = os.path.dirname(os.path.realpath('__file__'))
+parentDir = os.fsencode(os.path.join(os.path.dirname(os.path.realpath('__file__')), 'asl_alphabet_test'))
 
-app.inputs.create_image_from_filename(filename= os.path.join(parentDir,'asl_alphabet_test/A_test.jpg'), concepts=['A'])
-app.inputs.create_image_from_filename(filename= os.path.join(parentDir,'asl_alphabet_test/B_test.jpg'), not_concepts=['A'])
+directory = os.fsencode(parentDir)
+
+for file in os.listdir(directory):
+    fileName = os.fsdecode(file)
+    app.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
+    print(fileName[:1])
+
+
+
 app.models.delete_all()
-model = app.models.create(model_id="ASLAlphabet", concepts=["A"])
-model.train()
-model = app.models.get('ASLAlphabet')
-response = model.predict_by_filename(os.path.join(parentDir,'asl_alphabet_test/C_test.jpg'))
-concepts = response['outputs'][0]['data']['concepts']
+model1 = app.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
+# model2 = app.models.create(model_id='ASLAlphabet2', concepts=['F', 'G', 'H', 'I', 'J'])
+# model3 = app.models.create(model_id='ASLAlphabet3', concepts=[])
+# model4 = app.models.create(model_id='ASLAlphabet4', concepts=['P', 'Q', 'R', 'S', 'T'])
+# model5 = app.models.create(model_id='ASLAlphabet5', concepts=['U', 'V', 'W', 'X', 'Y'])
+# model6 = app.models.create(model_id='ASLAlphabet6', concepts=['Z', 's'])
+
+model1.train()
+# model2.train()
+# model3.train()
+# model4.train()
+# model5.train()
+# model6.train()
+
+model1 = app.models.get('ASLAlphabet1')
+# model2 = app.models.get('ASLAlphabet2')
+# model3 = app.models.get('ASLAlphabet3')
+# model4 = app.models.get('ASLAlphabet4')
+# model5 = app.models.get('ASLAlphabet5')
+# model6 = app.models.get('ASLAlphabet6')
+
+response1 = model1.predict_by_filename(os.path.join(directory,os.fsencode('C_test.jpg')))
+# response2 = model2.predict_by_filename(os.path.join(directory,os.fsencode('F_test.jpg')))
+# response3 = model3.predict_by_filename(os.path.join(directory,os.fsencode('O_test.jpg')))
+# response4 = model4.predict_by_filename(os.path.join(directory,os.fsencode('T_test.jpg')))
+# response5 = model5.predict_by_filename(os.path.join(directory,os.fsencode('V_test.jpg')))
+# response6 = model6.predict_by_filename(os.path.join(directory,os.fsencode('Z_test.jpg')))
+
+concepts = response1['outputs'][0]['data']['concepts']
 for concept in concepts:
     print(concept['name'], concept['value'])
+
+# concepts2 = response2['outputs'][0]['data']['concepts']
+# for concept in concepts2:
+#     print(concept['name'], concept['value'])
+
+# concepts3 = response3['outputs'][0]['data']['concepts']
+# for concept in concepts3:
+#     print(concept['name'], concept['value'])
+
+# concepts4 = response4['outputs'][0]['data']['concepts']
+# for concept in concepts4:
+#     print(concept['name'], concept['value'])
+
+# concepts5 = response5['outputs'][0]['data']['concepts']
+# for concept in concepts4:
+#     print(concept['name'], concept['value'])
+
+# concepts6 = response6['outputs'][0]['data']['concepts']
+# for concept in concepts6:
+#     print(concept['name'], concept['value'])
