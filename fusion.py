@@ -102,10 +102,9 @@ while True:
 
         clrf_responseAJ = modelAJ.predict_by_filename(os.path.join(imageDir, img_name))
         clrf_responseKs = modelKs.predict_by_filename(os.path.join(imageDir, img_name))
-        #clrf_responseTZ = modelTZ.predict_by_filename(os.path.join(imageDir, img_name))
-        #TODO: train TZ set because it got deleted
+        clrf_responseTZ = modelTZ.predict_by_filename(os.path.join(imageDir, img_name))
 
-        concepts = clrf_responseAJ['outputs'][0]['data']['concepts'] + clrf_responseKs['outputs'][0]['data']['concepts'] # + clrf_responseTZ['outputs'][0]['data']['concepts']
+        concepts = clrf_responseAJ['outputs'][0]['data']['concepts'] + clrf_responseKs['outputs'][0]['data']['concepts'] + clrf_responseTZ['outputs'][0]['data']['concepts']
 
         sorted_concepts = qsort_concept(concepts)
         print(sorted_concepts)
