@@ -29,14 +29,30 @@ for file in os.listdir(directory):
     fileName = os.fsdecode(file)
     e = allLetters.index(fileName[:1])
     if fileName[:1] >= 'A' and fileName[:1] <= 'J':
-        appAJ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[:e] + allLetters[(e+1):10]))
-        print(fileName[:1])
+        picDir = os.path.join(directory, os.fsencode(fileName))
+        picList = os.listdir(picDir)
+        for pic in picList:
+            picName = os.fsdecode(pic)
+            appAJ.inputs.create_image_from_filename(filename = os.path.join(picDir, os.fsencode(picName)), concepts=[fileName[:1]], not_concepts=(allLetters[:e] + allLetters[(e+1):10]))
+            print(fileName[:1])
     if fileName[:1] >= "K" and fileName[:1] <= "S" or fileName[:1] == "s":
-        appKs.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[10:e] + allLetters[(e+1):20]))
-        print(fileName[:1])
+        # appKs.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[10:e] + allLetters[(e+1):20]))
+        # print(fileName[:1])
+        picDir = os.path.join(directory, os.fsencode(fileName))
+        picList = os.listdir(picDir)
+        for pic in picList:
+            picName = os.fsdecode(pic)
+            appKs.inputs.create_image_from_filename(filename = os.path.join(picDir, os.fsencode(picName)), concepts=[fileName[:1]], not_concepts=(allLetters[10:e] + allLetters[(e+1):20]))
+            print(fileName[:1])
     if fileName[:1] >= "T" and fileName[:1] <= "Z":
-        appTZ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[20:e] + allLetters[(e+1):]))
-        print(fileName[:1])
+        # appTZ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[20:e] + allLetters[(e+1):]))
+        # print(fileName[:1])
+        picDir = os.path.join(directory, os.fsencode(fileName))
+        picList = os.listdir(picDir)
+        for pic in picList:
+            picName = os.fsdecode(pic)
+            appTZ.inputs.create_image_from_filename(filename = os.path.join(picDir, os.fsencode(picName)), concepts=[fileName[:1]], not_concepts=(allLetters[20:e] + allLetters[(e+1):]))
+            print(fileName[:1])
 
 
 appAJ.models.delete_all()
@@ -64,7 +80,7 @@ model3 = appTZ.models.get('ASLAlphabet3')
 # model6 = app.models.get('ASLAlphabet6')
 
 
-response1 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('A61.jpg')))
+response1 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('A1821.jpg')))
 response2 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('B2002.jpg')))
 response3 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('C1017.jpg')))
 
