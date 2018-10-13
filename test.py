@@ -4,10 +4,20 @@ import os
 import time
 import numpy as np
 
+
+
 cam = cv2.VideoCapture(1)
 
 currentTime = datetime.now()
 
+dirName = 'images'
+
+try:
+    # Create target Directory
+    os.mkdir(dirName)
+    print("Directory " , dirName ,  " Created ")
+except FileExistsError:
+    print("Directory " , dirName ,  " already exists")
 
 cv2.namedWindow("test")
 
