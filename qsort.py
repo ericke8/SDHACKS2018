@@ -1,9 +1,9 @@
-def qsort(arr):
-    if not arr:
+def qsort_concept(concepts):
+    if not concepts:
         return []
     else:
-        pivot = arr[0]
-        less = [data for data in arr if data < pivot]
-        more = [data for data in arr[1:] if x >= pivot]
-        sorted_arr = qsort(less) + [pivot] + qsort(more)
-        return sorted_arr
+        pivot = concepts[0]['value']
+        less = [concept for concept in concepts if concept['value'] < pivot]
+        more = [concept for concept in concepts[1:] if concept['value'] >= pivot]
+        sorted_concepts = qsort_concept(less) + [pivot] + qsort_concept(more)
+        return sorted_concepts
