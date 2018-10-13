@@ -79,6 +79,8 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 while True:
     ret, frame = cam.read()
     height, width, channels = frame.shape
+    frame = frame[int(width*1/5):int(width*4/5), int(height*1/5):int(height*4/5)]
+    height, width, channels = frame.shape
     img = np.zeros((height,width,3), np.uint8)
 
 
