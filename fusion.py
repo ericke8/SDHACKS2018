@@ -10,9 +10,10 @@ KEY_MOD = 256
 SPACE_KEY = 32
 ESC_KEY = 27
 
-translate_output = open("output.txt", "a+")
+translate_output = open("output.txt", "w+")
+translate_output.write("Welcome to Sign Language Translator.\n")
 
-json_data = open("./api_keys.json").read()
+json_data = open(os.path.join(os.path.dirname(os.path.realpath('__file__')),"api_keys.json")).read()
 api_keys = json.loads(json_data)
 
 appAJ = ClarifaiApp(api_key=api_keys['key1'])
@@ -70,7 +71,7 @@ try:
 except FileExistsError:
     print("Directory " , dirName ,  " already exists.")
 
-imageDir = os.fsencode(os.path.join(os.path.dirname(os.path.realpath('__file__')), dirName))
+imageDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), dirName)
 
 cv2.namedWindow("SL Translator")
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -91,21 +92,22 @@ while True:
         break
     elif k%KEY_MOD == SPACE_KEY:
         # SPACE pressed
-        img_name = "images/opencv_frame.png" #.format(img_counter)
-        cv2.imwrite(img_name, frame)
+        img_name = "opencv_frame.png" #.format(img_counter)
+        cv2.imwrite(os.path.join(imageDir, img_name), frame)
         print("{} written!".format(img_name))
 
         cv2.rectangle(img, position_flash, size_flash, rgb_flash, thickness_flash)
 
         clrf_responseAJ = modelAJ.predict_by_filename(os.path.join(imageDir, img_name))
         clrf_responseKs = modelKs.predict_by_filename(os.path.join(imageDir, img_name))
-        clrf_responseTZ = modelTZ.predict_by_filename(os.path.join(imageDir, img_name))
+        #clrf_responseTZ = modelTZ.predict_by_filename(os.path.join(imageDir, img_name))
+        #TODO: train TZ set because it got deleted
 
-        concepts = clrf_responseAJ['outputs'][0]['data']['concepts'] + clrf_responseKs['outputs'][0]['data']['concepts'] + clrf_responseTZ['outputs'][0]['data']['concepts']
+        concepts = clrf_responseAJ['outputs'][0]['data']['concepts'] + clrf_responseKs['outputs'][0]['data']['concepts'] # + clrf_responseTZ['outputs'][0]['data']['concepts']
 
         sorted_concepts = qsort_concept(concepts)
-
-        translate_output.write(sorted_concepts['name'])
+        print(sorted_concepts)
+        translate_output.write(sorted_concepts[-1]['name'])
 
         os.remove(os.path.join(imageDir, img_name))
 
@@ -114,8 +116,8 @@ while True:
     else:
         cv2.imshow("SL Translator", frame)
 
+open("output.txt","w").close
 cam.release()
-
 cv2.destroyAllWindows()
 
 '''
