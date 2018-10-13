@@ -6,8 +6,8 @@ json_data = open("./api_keys.json").read()
 api_keys = json.loads(json_data)
 
 appAJ = ClarifaiApp(api_key=api_keys['key1'])
-appKT = ClarifaiApp(api_key=api_keys['key2'])
-appUSpace = ClarifaiApp(api_key=api_keys['key3'])
+appKs = ClarifaiApp(api_key=api_keys['key2'])
+appTZ = ClarifaiApp(api_key=api_keys['key3'])
 
 
 # model = app.public_models.general_model
@@ -26,21 +26,21 @@ for file in os.listdir(directory):
     if fileName[:1] >= 'A' and fileName[:1] <= 'J':
         appAJ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
         print(fileName[:1])
-    if fileName[:1] >= "K" and fileName[:1] <= "T":
-        appKT.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
+    if fileName[:1] >= "K" and fileName[:1] <= "s":
+        appKs.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
         print(fileName[:1])
-    if fileName[:1] >= "U" and fileName[:1] <= "Z":
-        appUSpace.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
+    if fileName[:1] >= "T" and fileName[:1] <= "Z":
+        appTZ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
         print(fileName[:1])
 
 
 
 appAJ.models.delete_all()
-appKT.models.delete_all()
-appUSpace.models.delete_all()
+appKs.models.delete_all()
+appTZ.models.delete_all()
 model1 = appAJ.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
-model2 = appKT.models.create(model_id='ASLAlphabet2', concepts=['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'])
-model3 = appUSpace.models.create(model_id='ASLAlphabet3', concepts=['U', 'V', 'W', 'X', 'Y', 'Z'])
+model2 = appKs.models.create(model_id='ASLAlphabet2', concepts=['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's'])
+model3 = appTZ.models.create(model_id='ASLAlphabet3', concepts=['T', 'U', 'V', 'W', 'X', 'Y', 'Z'])
 # model4 = app.models.create(model_id='ASLAlphabet4', concepts=['P', 'Q', 'R', 'S', 'T'])
 # model5 = app.models.create(model_id='ASLAlphabet5', concepts=['U', 'V', 'W', 'X', 'Y'])
 # model6 = app.models.create(model_id='ASLAlphabet6', concepts=['Z', 's'])
@@ -53,8 +53,8 @@ model3.train()
 # model6.train()
 
 model1 = appAJ.models.get('ASLAlphabet1')
-model2 = appKT.models.get('ASLAlphabet2')
-model3 = appUSpace.models.get('ASLAlphabet3')
+model2 = appKs.models.get('ASLAlphabet2')
+model3 = appTZ.models.get('ASLAlphabet3')
 # model4 = app.models.get('ASLAlphabet4')
 # model5 = app.models.get('ASLAlphabet5')
 # model6 = app.models.get('ASLAlphabet6')
