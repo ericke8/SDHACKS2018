@@ -1,6 +1,8 @@
 import cv2
 from datetime import datetime
 import os
+import time
+import numpy as np
 
 cam = cv2.VideoCapture(1)
 
@@ -15,8 +17,8 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 
 while True:
     ret, frame = cam.read()
-    #cv2.putText(frame,'OpenCV',(10,500), font, 4,(255,255,255),2,cv2.LINE_AA)
-    #cv2.imshow("test", frame)
+    height, width, channels = frame.shape
+    img = np.zeros((height,width,3), np.uint8)
 
 
     if not ret:
@@ -27,15 +29,21 @@ while True:
         # ESC pressed
         print("Escape hit, closing...")
         break
-    if (datetime.now() - currentTime).total_seconds() >= 2:
-        currentTime = datetime.now()
+    elif k%256 == 32:
+        # SPACE pressed
         img_name = "images/opencv_frame_{}.png".format(img_counter)
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
-        img_counter += 1
+        img_counter+=1
 
-    cv2.putText(frame,'Open',(img_counter*5,50), font, 4,(255,255,255),2,cv2.LINE_AA)
-    cv2.imshow("test", frame)
+        cv2.rectangle(img,(10,10),(630,460),(255,255,255),1000)
+
+        cv2.imshow("test", img)
+        cv2.waitKey(1000)
+
+
+    else:
+        cv2.imshow("test", frame)
 
 cam.release()
 
