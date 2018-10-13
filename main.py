@@ -9,7 +9,7 @@ app = ClarifaiApp(api_key='b6fdc0bdb31847798c3568d6922aa2c8')
 # for concept in concepts:
 #     print(concept['name'], concept['value'])
 
-parentDir = os.fsencode(os.path.join(os.path.dirname(os.path.realpath('__file__')), 'asl_alphabet_test'))
+parentDir = os.fsencode(os.path.join(os.path.dirname(os.path.realpath('__file__')), 'asl_alphabet_train'))
 
 directory = os.fsencode(parentDir)
 
