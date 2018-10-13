@@ -1,7 +1,13 @@
 from clarifai.rest import ClarifaiApp
 import os
+import json
 
-app = ClarifaiApp(api_key='b6fdc0bdb31847798c3568d6922aa2c8')
+json_data = open("./api_keys.json")
+api_keys = json.loads(json_data)
+
+appAJ = ClarifaiApp(api_key=api_keys['key1']) # Letters A-J
+appKT = ClarifaiApp(api_key=api_keys['key2']) # Letters K-T
+appUSpace = ClarifaiApp(api_key=api_keys['key3']) # Letters U-Z and space
 # model = app.public_models.general_model
 # response = model.predict_by_url(url='https://samples.clarifai.com/metro-north.jpg')
 
@@ -20,8 +26,8 @@ for file in os.listdir(directory):
 
 
 
-app.models.delete_all()
-model1 = app.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
+appAJ.models.delete_all()
+model1 = appAJ.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
 # model2 = app.models.create(model_id='ASLAlphabet2', concepts=['F', 'G', 'H', 'I', 'J'])
 # model3 = app.models.create(model_id='ASLAlphabet3', concepts=[])
 # model4 = app.models.create(model_id='ASLAlphabet4', concepts=['P', 'Q', 'R', 'S', 'T'])
@@ -35,7 +41,7 @@ model1.train()
 # model5.train()
 # model6.train()
 
-model1 = app.models.get('ASLAlphabet1')
+model1 = appAJ.models.get('ASLAlphabet1')
 # model2 = app.models.get('ASLAlphabet2')
 # model3 = app.models.get('ASLAlphabet3')
 # model4 = app.models.get('ASLAlphabet4')
