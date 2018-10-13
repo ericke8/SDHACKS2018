@@ -1,7 +1,11 @@
 from clarifai.rest import ClarifaiApp
 import os
 
-app = ClarifaiApp(api_key='b6fdc0bdb31847798c3568d6922aa2c8')
+app1 = ClarifaiApp(api_key='b6fdc0bdb31847798c3568d6922aa2c8')
+app2 = ClarifaiApp(api_key='13035a6ec494485b81186a0d03a1d38c')
+app3 = ClarifaiApp(api_key='cfb3878bef0a4a92af8ae8b0cc5a9c17')
+
+
 # model = app.public_models.general_model
 # response = model.predict_by_url(url='https://samples.clarifai.com/metro-north.jpg')
 
@@ -15,36 +19,45 @@ directory = os.fsencode(parentDir)
 
 for file in os.listdir(directory):
     fileName = os.fsdecode(file)
-    app.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
-    print(fileName[:1])
+    if fileName[:1] >= 'A' and fileName[:1] <= 'J':
+        app1.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
+        print(fileName[:1])
+    if fileName[:1] >= "K" and fileName[:1] <= "T":
+        app2.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
+        print(fileName[:1])
+    if fileName[:1] >= "U" and fileName[:1] <= "Z":
+        app3.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]])
+        print(fileName[:1])
 
 
 
-app.models.delete_all()
-model1 = app.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
-# model2 = app.models.create(model_id='ASLAlphabet2', concepts=['F', 'G', 'H', 'I', 'J'])
-# model3 = app.models.create(model_id='ASLAlphabet3', concepts=[])
+app1.models.delete_all()
+app2.models.delete_all()
+app3.models.delete_all()
+model1 = app1.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
+model2 = app2.models.create(model_id='ASLAlphabet2', concepts=['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'])
+model3 = app3.models.create(model_id='ASLAlphabet3', concepts=['U', 'V', 'W', 'X', 'Y', 'Z'])
 # model4 = app.models.create(model_id='ASLAlphabet4', concepts=['P', 'Q', 'R', 'S', 'T'])
 # model5 = app.models.create(model_id='ASLAlphabet5', concepts=['U', 'V', 'W', 'X', 'Y'])
 # model6 = app.models.create(model_id='ASLAlphabet6', concepts=['Z', 's'])
 
 model1.train()
-# model2.train()
-# model3.train()
+model2.train()
+model3.train()
 # model4.train()
 # model5.train()
 # model6.train()
 
-model1 = app.models.get('ASLAlphabet1')
-# model2 = app.models.get('ASLAlphabet2')
-# model3 = app.models.get('ASLAlphabet3')
+model1 = app1.models.get('ASLAlphabet1')
+model2 = app2.models.get('ASLAlphabet2')
+model3 = app3.models.get('ASLAlphabet3')
 # model4 = app.models.get('ASLAlphabet4')
 # model5 = app.models.get('ASLAlphabet5')
 # model6 = app.models.get('ASLAlphabet6')
 
 response1 = model1.predict_by_filename(os.path.join(directory,os.fsencode('C_test.jpg')))
-# response2 = model2.predict_by_filename(os.path.join(directory,os.fsencode('F_test.jpg')))
-# response3 = model3.predict_by_filename(os.path.join(directory,os.fsencode('O_test.jpg')))
+response2 = model2.predict_by_filename(os.path.join(directory,os.fsencode('M_test.jpg')))
+response3 = model3.predict_by_filename(os.path.join(directory,os.fsencode('X_test.jpg')))
 # response4 = model4.predict_by_filename(os.path.join(directory,os.fsencode('T_test.jpg')))
 # response5 = model5.predict_by_filename(os.path.join(directory,os.fsencode('V_test.jpg')))
 # response6 = model6.predict_by_filename(os.path.join(directory,os.fsencode('Z_test.jpg')))
@@ -53,13 +66,13 @@ concepts = response1['outputs'][0]['data']['concepts']
 for concept in concepts:
     print(concept['name'], concept['value'])
 
-# concepts2 = response2['outputs'][0]['data']['concepts']
-# for concept in concepts2:
-#     print(concept['name'], concept['value'])
+concepts2 = response2['outputs'][0]['data']['concepts']
+for concept in concepts2:
+    print(concept['name'], concept['value'])
 
-# concepts3 = response3['outputs'][0]['data']['concepts']
-# for concept in concepts3:
-#     print(concept['name'], concept['value'])
+concepts3 = response3['outputs'][0]['data']['concepts']
+for concept in concepts3:
+    print(concept['name'], concept['value'])
 
 # concepts4 = response4['outputs'][0]['data']['concepts']
 # for concept in concepts4:
