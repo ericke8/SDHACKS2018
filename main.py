@@ -25,7 +25,7 @@ directory = os.fsencode(parentDir)
 
 allLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
-testing = False
+testing = True
 
 if appAJ.models.get_all() is None or testing:
     for file in os.listdir(directory):
@@ -84,9 +84,9 @@ model3 = appTZ.models.get('ASLAlphabet3')
 # model6 = app.models.get('ASLAlphabet6')
 
 
-response1 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('Fsign.jpg')))
-response2 = model2.predict_by_filename(os.path.join(testDir,os.fsencode('Psign.jpg')))
-response3 = model3.predict_by_filename(os.path.join(testDir,os.fsencode('Usign.jpg')))
+response1 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('Fsign1.jpg')))
+response2 = model2.predict_by_filename(os.path.join(testDir,os.fsencode('Psign1.jpg')))
+response3 = model3.predict_by_filename(os.path.join(testDir,os.fsencode('Usign1.jpg')))
 
 # response2 = model2.predict_by_filename(os.path.join(directory,os.fsencode('M_test.jpg')))
 # response3 = model3.predict_by_filename(os.path.join(directory,os.fsencode('X_test.jpg')))
