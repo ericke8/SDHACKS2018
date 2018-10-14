@@ -26,36 +26,56 @@ directory = os.fsencode(parentDir)
 
 allLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
-for file in os.listdir(directory):
-    fileName = os.fsdecode(file)
-    e = allLetters.index(fileName[:1])
-    if fileName[:1] >= 'A' and fileName[:1] <= 'J':
-        appAJ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[:e] + allLetters[(e+1):10]))
-        print(fileName[:1])
-    if fileName[:1] >= "K" and fileName[:1] <= "S" or fileName[:1] == "s":
-        appKs.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[10:e] + allLetters[(e+1):20]))
-        print(fileName[:1])
-    if fileName[:1] >= "T" and fileName[:1] <= "Z":
-        appTZ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[20:e] + allLetters[(e+1):]))
-        print(fileName[:1])
+testing = False
+
+if appAJ.models.get_all() is None or testing:
+    for file in os.listdir(directory):
+        fileName = os.fsdecode(file)
+        e = allLetters.index(fileName[:1])
+        if fileName[:1] >= 'A' and fileName[:1] <= 'J':
+            picDir = os.path.join(directory, os.fsencode(fileName))
+            picList = os.listdir(picDir)
+            for pic in picList:
+                picName = os.fsdecode(pic)
+                appAJ.inputs.create_image_from_filename(filename = os.path.join(picDir, os.fsencode(picName)), concepts=[fileName[:1]], not_concepts=(allLetters[:e] + allLetters[(e+1):10]))
+                print(fileName[:1])
+        if fileName[:1] >= "K" and fileName[:1] <= "S" or fileName[:1] == "s":
+            # appKs.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[10:e] + allLetters[(e+1):20]))
+            # print(fileName[:1])
+            picDir = os.path.join(directory, os.fsencode(fileName))
+            picList = os.listdir(picDir)
+            for pic in picList:
+                picName = os.fsdecode(pic)
+                appKs.inputs.create_image_from_filename(filename = os.path.join(picDir, os.fsencode(picName)), concepts=[fileName[:1]], not_concepts=(allLetters[10:e] + allLetters[(e+1):20]))
+                print(fileName[:1])
+        if fileName[:1] >= "T" and fileName[:1] <= "Z":
+            # appTZ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[20:e] + allLetters[(e+1):]))
+            # print(fileName[:1])
+            picDir = os.path.join(directory, os.fsencode(fileName))
+            picList = os.listdir(picDir)
+            for pic in picList:
+                picName = os.fsdecode(pic)
+                appTZ.inputs.create_image_from_filename(filename = os.path.join(picDir, os.fsencode(picName)), concepts=[fileName[:1]], not_concepts=(allLetters[20:e] + allLetters[(e+1):]))
+                print(fileName[:1])
 
 
-appAJ.models.delete_all()
-appKs.models.delete_all()
-appTZ.models.delete_all()
-model1 = appAJ.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
-model2 = appKs.models.create(model_id='ASLAlphabet2', concepts=['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's'])
-model3 = appTZ.models.create(model_id='ASLAlphabet3', concepts=['T', 'U', 'V', 'W', 'X', 'Y', 'Z'])
-# model4 = app.models.create(model_id='ASLAlphabet4', concepts=['P', 'Q', 'R', 'S', 'T'])
-# model5 = app.models.create(model_id='ASLAlphabet5', concepts=['U', 'V', 'W', 'X', 'Y'])
-# model6 = app.models.create(model_id='ASLAlphabet6', concepts=['Z', 's'])
+    appAJ.models.delete_all()
+    appKs.models.delete_all()
+    appTZ.models.delete_all()
 
-model1.train()
-model2.train()
-model3.train()
-# model4.train()
-# model5.train()
-# model6.train()
+    model1 = appAJ.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
+    model2 = appKs.models.create(model_id='ASLAlphabet2', concepts=['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's'])
+    model3 = appTZ.models.create(model_id='ASLAlphabet3', concepts=['T', 'U', 'V', 'W', 'X', 'Y', 'Z'])
+    # model4 = app.models.create(model_id='ASLAlphabet4', concepts=['P', 'Q', 'R', 'S', 'T'])
+    # model5 = app.models.create(model_id='ASLAlphabet5', concepts=['U', 'V', 'W', 'X', 'Y'])
+    # model6 = app.models.create(model_id='ASLAlphabet6', concepts=['Z', 's'])
+
+    model1.train()
+    model2.train()
+    model3.train()
+    # model4.train()
+    # model5.train()
+    # model6.train()
 
 model1 = appAJ.models.get('ASLAlphabet1')
 model2 = appKs.models.get('ASLAlphabet2')
@@ -65,9 +85,9 @@ model3 = appTZ.models.get('ASLAlphabet3')
 # model6 = app.models.get('ASLAlphabet6')
 
 
-response1 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('A61.jpg')))
-response2 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('B2002.jpg')))
-response3 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('C1017.jpg')))
+response1 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('Fsign1.jpg')))
+response2 = model2.predict_by_filename(os.path.join(testDir,os.fsencode('Psign1.jpg')))
+response3 = model3.predict_by_filename(os.path.join(testDir,os.fsencode('Usign1.jpg')))
 
 # response2 = model2.predict_by_filename(os.path.join(directory,os.fsencode('M_test.jpg')))
 # response3 = model3.predict_by_filename(os.path.join(directory,os.fsencode('X_test.jpg')))
