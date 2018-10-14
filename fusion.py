@@ -83,6 +83,7 @@ while True:
     height, width, channels = frame.shape
     img = np.zeros((height,width,3), np.uint8)
 
+    img_counter = 1
 
     if not ret:
         break
@@ -94,7 +95,8 @@ while True:
         break
     elif k%KEY_MOD == SPACE_KEY:
         # SPACE pressed
-        img_name = "opencv_frame.png" #.format(img_counter)
+        img_name = "A_sample{}.jpg".format(img_counter) # "opencv_frame.png"
+        img_counter = img_counter + 1
         cv2.imwrite(os.path.join(imageDir, img_name), frame)
         print("{} written!".format(img_name))
 
@@ -110,7 +112,7 @@ while True:
         print(sorted_concepts)
         translate_output.write(sorted_concepts[-1]['name'])
 
-        os.remove(os.path.join(imageDir, img_name))
+        #os.remove(os.path.join(imageDir, img_name))
 
         cv2.imshow("SL Translator", img)
         cv2.waitKey(500)
