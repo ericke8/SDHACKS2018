@@ -76,6 +76,8 @@ imageDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), dirName)
 cv2.namedWindow("SL Translator")
 font = cv2.FONT_HERSHEY_SIMPLEX
 
+img_counter = 1
+
 while True:
     ret, frame = cam.read()
     height, width, channels = frame.shape
@@ -94,7 +96,8 @@ while True:
         break
     elif k%KEY_MOD == SPACE_KEY:
         # SPACE pressed
-        img_name = "opencv_frame.png" #.format(img_counter)
+        img_name = "A_sample{}.png".format(img_counter)
+        img_counter += 1
         cv2.imwrite(os.path.join(imageDir, img_name), frame)
         print("{} written!".format(img_name))
 
@@ -110,7 +113,7 @@ while True:
         print(sorted_concepts)
         translate_output.write(sorted_concepts[-1]['name'])
 
-        os.remove(os.path.join(imageDir, img_name))
+        #os.remove(os.path.join(imageDir, img_name))
 
         cv2.imshow("SL Translator", img)
         cv2.waitKey(500)
