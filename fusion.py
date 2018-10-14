@@ -51,6 +51,7 @@ modelTZ.train() """
 modelAJ = appAJ.models.get('ASLAlphabet1')
 modelKs = appKs.models.get('ASLAlphabet2')
 modelTZ = appTZ.models.get('ASLAlphabet3')
+text = ""
 
 position_flash = (10,10)
 size_flash = (630,460)
@@ -74,6 +75,7 @@ except FileExistsError:
 imageDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), dirName)
 
 cv2.namedWindow("SL Translator")
+cv2.namedWindow("Output")
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 
@@ -83,7 +85,7 @@ while True:
     frame = frame[int(width*1/5):int(width*4/5), int(height*1/5):int(height*4/5)]
     height, width, channels = frame.shape
     img = np.zeros((height,width,3), np.uint8)
-
+    img2 = np.zeros((800,800,3), np.uint8)
 
     if not ret:
         break
@@ -97,7 +99,7 @@ while True:
         # SPACE pressed
         img_name = "opencv_frame.png"
         cv2.imwrite(os.path.join(imageDir, img_name), frame)
-        print("{} written!".format(img_name))
+        # print("{} written!".format(img_name))
 
         cv2.rectangle(img, position_flash, size_flash, rgb_flash, thickness_flash)
 
@@ -108,12 +110,18 @@ while True:
         concepts = clrf_responseAJ['outputs'][0]['data']['concepts'] + clrf_responseKs['outputs'][0]['data']['concepts'] + clrf_responseTZ['outputs'][0]['data']['concepts']
 
         sorted_concepts = qsort_concept(concepts)
-        print(sorted_concepts)
+        print(sorted_concepts[-1]['id'])
+        if sorted_concepts[-1]['id'] == 's':
+            text+= " "
+        else:
+            text+= sorted_concepts[-1]['id']
         translate_output.write(sorted_concepts[-1]['name'])
 
         os.remove(os.path.join(imageDir, img_name))
 
         cv2.imshow("SL Translator", img)
+        cv2.putText(img2, text, (50, 50), font, 1, (255, 255, 255))
+        cv2.imshow("Output", img2)
         cv2.waitKey(500)
     else:
         cv2.imshow("SL Translator", frame)
