@@ -111,7 +111,10 @@ while True:
 
         sorted_concepts = qsort_concept(concepts)
         print(sorted_concepts[-1]['id'])
-        text+=sorted_concepts[-1]['id']
+        if sorted_concepts[-1]['id'] == 's':
+            text+= " "
+        else:
+            text+= sorted_concepts[-1]['id']
         translate_output.write(sorted_concepts[-1]['name'])
 
         os.remove(os.path.join(imageDir, img_name))
