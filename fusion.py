@@ -17,37 +17,6 @@ appAJ = ClarifaiApp(api_key=api_keys['key1'])
 appKs = ClarifaiApp(api_key=api_keys['key2'])
 appTZ = ClarifaiApp(api_key=api_keys['key3'])
 
-""" parentDir = os.fsencode(os.path.join(os.path.dirname(os.path.realpath('__file__')), 'asl_alphabet_train'))
-
-directory = os.fsencode(parentDir)
-
-allLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-
-for file in os.listdir(directory):
-    fileName = os.fsdecode(file)
-    e = allLetters.index(fileName[:1])
-    if fileName[:1] >= 'A' and fileName[:1] <= 'J':
-        appAJ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[:e] + allLetters[(e+1):10]))
-        print(fileName[:1])
-    if fileName[:1] >= "K" and fileName[:1] <= "S" or fileName[:1] == "s":
-        appKs.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[10:e] + allLetters[(e+1):20]))
-        print(fileName[:1])
-    if fileName[:1] >= "T" and fileName[:1] <= "Z":
-        appTZ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[20:e] + allLetters[(e+1):]))
-        print(fileName[:1])
-
-appAJ.models.delete_all()
-appKs.models.delete_all()
-appTZ.models.delete_all()
-
-modelAJ = appAJ.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
-modelKs = appKs.models.create(model_id='ASLAlphabet2', concepts=['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's'])
-modelTZ = appTZ.models.create(model_id='ASLAlphabet3', concepts=['T', 'U', 'V', 'W', 'X', 'Y', 'Z'])
-
-modelAJ.train()
-modelKs.train()
-modelTZ.train() """
-
 modelAJ = appAJ.models.get('ASLAlphabet1')
 modelKs = appKs.models.get('ASLAlphabet2')
 modelTZ = appTZ.models.get('ASLAlphabet3')
@@ -58,7 +27,26 @@ size_flash = (630,460)
 rgb_flash = (255,255,255)
 thickness_flash = 1000
 
-cam = cv2.VideoCapture(1)
+while(True):
+    cam_num = input("How many webcams does your device have? Enter a numerical value: ")
+    if int(cam_num) == 0:
+        print("Sorry, you need a webcam to use this app!")
+        exit()
+    elif int(cam_num) == 1:
+        cam = cv2.VideoCapture(0)
+        break
+    elif int(cam_num) == 2:
+        cam_choice = input("Which camera would you like to use? front/rear: ")
+        if cam_choice == "front":
+            cam = cv2.VideoCapture(0)
+            break
+        elif cam_choice == "rear":
+            cam = cv2.VideoCapture(1)
+            break
+        else:
+            print("Enter valid choice")
+    else:
+        print("Only 1 or 2 webcams are usable.")
 
 translate_output = open("output.txt", "w+")
 translate_output.write("Welcome to Sign Language Translator.\n")
