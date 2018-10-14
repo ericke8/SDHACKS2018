@@ -1,127 +1,53 @@
 import cv2
 from datetime import datetime
-import time
 import os
+import time
 import numpy as np
-import json
-from qsort import qsort_concept
-
-from clarifai.rest import ClarifaiApp
 
 
 
-def startCam():
-    current_time = datetime.now()
-    KEY_MOD = 256
-    SPACE_KEY = 32
-    ESC_KEY = 27
-    font = cv2.FONT_HERSHEY_SIMPLEX
 
-    json_data = open(os.path.join(os.path.dirname(os.path.realpath('__file__')),"api_keys.json")).read()
-    api_keys = json.loads(json_data)
-
-    appAJ = ClarifaiApp(api_key=api_keys['key1'])
-    appKs = ClarifaiApp(api_key=api_keys['key2'])
-    appTZ = ClarifaiApp(api_key=api_keys['key3'])
-
-    """ parentDir = os.fsencode(os.path.join(os.path.dirname(os.path.realpath('__file__')), 'asl_alphabet_train'))
-
-    directory = os.fsencode(parentDir)
-
-    allLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-
-    for file in os.listdir(directory):
-        fileName = os.fsdecode(file)
-        e = allLetters.index(fileName[:1])
-        if fileName[:1] >= 'A' and fileName[:1] <= 'J':
-            appAJ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[:e] + allLetters[(e+1):10]))
-            print(fileName[:1])
-        if fileName[:1] >= "K" and fileName[:1] <= "S" or fileName[:1] == "s":
-            appKs.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[10:e] + allLetters[(e+1):20]))
-            print(fileName[:1])
-        if fileName[:1] >= "T" and fileName[:1] <= "Z":
-            appTZ.inputs.create_image_from_filename(filename = os.path.join(directory, os.fsencode(fileName[:1] + '_test.jpg')), concepts=[fileName[:1]], not_concepts=(allLetters[20:e] + allLetters[(e+1):]))
-            print(fileName[:1])
-
-    appAJ.models.delete_all()
-    appKs.models.delete_all()
-    appTZ.models.delete_all()
-
-    modelAJ = appAJ.models.create(model_id='ASLAlphabet1', concepts=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'])
-    modelKs = appKs.models.create(model_id='ASLAlphabet2', concepts=['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's'])
-    modelTZ = appTZ.models.create(model_id='ASLAlphabet3', concepts=['T', 'U', 'V', 'W', 'X', 'Y', 'Z'])
-
-    modelAJ.train()
-    modelKs.train()
-    modelTZ.train() """
-
-    modelAJ = appAJ.models.get('ASLAlphabet1')
-    modelKs = appKs.models.get('ASLAlphabet2')
-    modelTZ = appTZ.models.get('ASLAlphabet3')
-
-    position_flash = (10,10)
-    size_flash = (630,460)
-    rgb_flash = (255,255,255)
-    thickness_flash = 1000
-
-    cam = cv2.VideoCapture(1)
-
-    translate_output = open("output.txt", "w+")
-    translate_output.write("Welcome to Sign Language Translator.\n")
-
-    dirName = 'images'
-
-    try:
-        # Create target Directory
-        os.mkdir(dirName)
-        print("Directory " , dirName ,  " Created.")
-    except FileExistsError:
-        print("Directory " , dirName ,  " already exists.")
-
-    imageDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), dirName)
-
-    cv2.namedWindow("SL Translator")
-    font = cv2.FONT_HERSHEY_SIMPLEX
-
-    while True:
-        ret, frame = cam.read()
-        height, width, channels = frame.shape
-        frame = frame[int(width*1/5):int(width*4/5), int(height*1/5):int(height*4/5)]
-        height, width, channels = frame.shape
+cam = cv2.VideoCapture(1)
+currentTime = datetime.now()
 
 
-        if not ret:
-            break
-        k = cv2.waitKey(1)
+cv2.namedWindow("test")
 
-        if k%KEY_MOD == ESC_KEY:
-            # ESC pressed
-            print("Escape hit, closing...")
-            break
-        elif (datetime.now() - current_time).total_seconds() >= 2:
-            # Two seconds
-            img_name = "opencv_frame.png"
-            cv2.imwrite(os.path.join(imageDir, img_name), frame)
-            print("{} written!".format(img_name))
-            current_time = datetime.now()
+img_counter = 0
+font = cv2.FONT_HERSHEY_SIMPLEX
 
 
+while True:
+    ret, frame = cam.read()
+    height, width, channels = frame.shape
+    frame = frame[int(width*1/5):int(width*4/5), int(height*1/5):int(height*4/5)]
+    img = np.zeros((height,width,3), np.uint8)
 
-            clrf_responseAJ = modelAJ.predict_by_filename(os.path.join(imageDir, img_name))
-            clrf_responseKs = modelKs.predict_by_filename(os.path.join(imageDir, img_name))
-            clrf_responseTZ = modelTZ.predict_by_filename(os.path.join(imageDir, img_name))
 
-            concepts = clrf_responseAJ['outputs'][0]['data']['concepts'] + clrf_responseKs['outputs'][0]['data']['concepts'] + clrf_responseTZ['outputs'][0]['data']['concepts']
+    if not ret:
+        break
+    k = cv2.waitKey(1)
 
-            sorted_concepts = qsort_concept(concepts)
-            print(sorted_concepts)
-            translate_output.write(sorted_concepts[-1]['name'])
+    if k%256 == 27:
+        # ESC pressed
+        print("Escape hit, closing...")
+        break
+    elif (datetime.now() - currentTime).total_seconds() >= 2:
+        # SPACE pressed
+        img_name = "images/opencv_frame_{}.png".format(img_counter)
+        cv2.imwrite(img_name, frame)
+        print("{} written!".format(img_name))
+        img_counter+=1
+        currentTime = datetime.now()
 
-            os.remove(os.path.join(imageDir, img_name))
 
-        else:
-            cv2.imshow("SL Translator", frame)
+    else:
+        cv2.imshow("test", frame)
 
-    open("output.txt","w").close
-    cam.release()
-    cv2.destroyAllWindows()
+cam.release()
+
+cv2.destroyAllWindows()
+
+for i in range(img_counter):
+    file_name = "images/opencv_frame_{}.png".format(i)
+    os.remove(file_name)
