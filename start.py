@@ -15,7 +15,6 @@ print('\n')
 print("Please make your selection to begin")
 print('\n')
 user_choice = ''
-option3 = 2
 while True:
     user_choice = input("Select your choice:\n\t [0] Manual\n\t [1] Automatic Two Sec\n\nYour Selection: ")
     try:
