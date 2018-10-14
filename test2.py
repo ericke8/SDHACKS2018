@@ -21,6 +21,7 @@ def startCam():
     while True:
         ret, frame = cam.read()
         height, width, channels = frame.shape
+        frame = frame[int(width*1/5):int(width*4/5), int(height*1/5):int(height*4/5)]
         img = np.zeros((height,width,3), np.uint8)
 
 
