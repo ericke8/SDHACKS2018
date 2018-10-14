@@ -25,7 +25,7 @@ directory = os.fsencode(parentDir)
 
 allLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 's', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
-testing = True
+testing = False
 
 if appAJ.models.get_all() is None or testing:
     for file in os.listdir(directory):
