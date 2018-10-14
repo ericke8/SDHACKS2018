@@ -1,2 +1,6 @@
 Welcome to Sign Language Translator.
+<<<<<<< HEAD
 RRFRGRRRHRHHTTTTTTXATTTZTTTTFFRDRRRRHsUPCFRRBXPRZR
+=======
+K
+>>>>>>> 82500215f7b33f2032b30e8540033ba4b3a7ae6c
