@@ -84,9 +84,9 @@ model3 = appTZ.models.get('ASLAlphabet3')
 # model6 = app.models.get('ASLAlphabet6')
 
 
-response1 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('A1821.jpg')))
-response2 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('B2002.jpg')))
-response3 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('C1017.jpg')))
+response1 = model1.predict_by_filename(os.path.join(testDir,os.fsencode('Fsign.jpg')))
+response2 = model2.predict_by_filename(os.path.join(testDir,os.fsencode('Psign.jpg')))
+response3 = model3.predict_by_filename(os.path.join(testDir,os.fsencode('Usign.jpg')))
 
 # response2 = model2.predict_by_filename(os.path.join(directory,os.fsencode('M_test.jpg')))
 # response3 = model3.predict_by_filename(os.path.join(directory,os.fsencode('X_test.jpg')))
