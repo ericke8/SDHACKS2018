@@ -97,7 +97,7 @@ while True:
         # SPACE pressed
         img_name = "opencv_frame.png"
         cv2.imwrite(os.path.join(imageDir, img_name), frame)
-        print("{} written!".format(img_name))
+        # print("{} written!".format(img_name))
 
         cv2.rectangle(img, position_flash, size_flash, rgb_flash, thickness_flash)
 
@@ -108,7 +108,7 @@ while True:
         concepts = clrf_responseAJ['outputs'][0]['data']['concepts'] + clrf_responseKs['outputs'][0]['data']['concepts'] + clrf_responseTZ['outputs'][0]['data']['concepts']
 
         sorted_concepts = qsort_concept(concepts)
-        print(sorted_concepts)
+        print(sorted_concepts[-1]['id'])
         translate_output.write(sorted_concepts[-1]['name'])
 
         os.remove(os.path.join(imageDir, img_name))
