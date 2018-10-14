@@ -38,10 +38,10 @@ while(True):
     elif int(cam_num) == 2:
         cam_choice = input("Which camera would you like to use? front/rear: ")
         if cam_choice == "front":
-            cam = cv2.VideoCapture(0)
+            cam = cv2.VideoCapture(1)
             break
         elif cam_choice == "rear":
-            cam = cv2.VideoCapture(1)
+            cam = cv2.VideoCapture(0)
             break
         else:
             print("Enter valid choice")
