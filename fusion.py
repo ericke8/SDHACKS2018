@@ -58,7 +58,7 @@ size_flash = (630,460)
 rgb_flash = (255,255,255)
 thickness_flash = 1000
 
-cam = cv2.VideoCapture(1)
+cam = cv2.VideoCapture(0)
 
 translate_output = open("output.txt", "w+")
 translate_output.write("Welcome to Sign Language Translator.\n")
